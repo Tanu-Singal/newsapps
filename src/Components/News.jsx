@@ -11,23 +11,21 @@ const News = (props) => {
   const [page,setPage]=useState(1);
   const [totalResults,setTotalResults]=useState(0);
 const apikey="f95d6560dc5f4d13b82f6af3a1bdb359";
-  const fetchnews=async()=>{
-    setLoading(true);
-let url=`https://newsapi.org/v2/top-headlines?apiKey=${apikey}&category=${props.category}&page=1&pageSize=${props.pageSize}`;
-try{
-  let data=await fetch(url);
-  let parsed=await data.json();
-  console.log(parsed);
-  setArticles(parsed.articles || []);
-  setTotalResults(parsed.totalResults || 0);
-  setLoading(false);
-}
-catch(error)
-{
-  console.error("Error fetching news:", error);
-  setLoading(false);
-}
+const fetchnews = useCallback(async () => {
+  setLoading(true);
+  const url = `https://newsapi.org/v2/top-headlines?apiKey=${apikey}&category=${props.category}&page=1&pageSize=${props.pageSize}`;
+  try {
+    let data = await fetch(url);
+    let parsed = await data.json();
+    console.log(parsed);
+    setArticles(parsed.articles || []);
+    setTotalResults(parsed.totalResults || 0);
+    setLoading(false);
+  } catch (error) {
+    console.error("Error fetching news:", error);
+    setLoading(false);
   }
+}, [props.category, props.pageSize]);
   useEffect(()=>{
     fetchnews();
   },[props.category])
