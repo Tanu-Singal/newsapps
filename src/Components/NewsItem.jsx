@@ -12,7 +12,8 @@ const NewsItem = (props) => {
     <h5 className="card-title">{props.title}...</h5>
     <p className="card-text">{props.description}...</p>
     <p className="card-text"><small className="text-muted">By {props.author?props.author:"unknown"} on {new Date(props.date).toGMTString()}</small> </p>
-    <a href={props.newsurl} target="_blank" className="btn btn-sm btn-dark">Read More</a>
+    <a href={props.newsurl} target="_blank" rel="noopener noreferrer" className="btn btn-sm btn-dark">Read More</a>
+
   </div>
 </div>
       </div>

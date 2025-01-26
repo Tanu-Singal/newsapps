@@ -13,7 +13,7 @@ const News = (props) => {
 
 const fetchnews = useCallback(async () => {
   setLoading(true);
-  const url = `https://newsapi.org/v2/top-headlines?apiKey=${process.env.API_KEY}&category=${props.category}&page=1&pageSize=${props.pageSize}`;
+  const url = `https://newsapi.org/v2/top-headlines?apiKey=${process.env.REACT_APP_API_KEY}&category=${props.category}&page=1&pageSize=${props.pageSize}`;
   try {
     let data = await fetch(url);
     let parsed = await data.json();
@@ -28,11 +28,11 @@ const fetchnews = useCallback(async () => {
 }, [props.category, props.pageSize]);
   useEffect(()=>{
     fetchnews();
-  },[props.category])
+  },[fetchnews])
   const fetchmoredata=async()=>{
     const nextpage=page+1;
     setPage(nextpage);
-    let url=`https://newsapi.org/v2/top-headlines?apiKey=${process.env.API_KEY}&category=${props.category}&page=${nextpage}&pageSize=${props.pageSize}`;
+    let url=`https://newsapi.org/v2/top-headlines?apiKey=${process.env.REACT_APP_API_KEY}&category=${props.category}&page=${nextpage}&pageSize=${props.pageSize}`;
 try{
   let data=await fetch(url);
   let parsed=await data.json();
