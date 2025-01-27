@@ -11,38 +11,41 @@ const News = (props) => {
   const [page,setPage]=useState(1);
   const [totalResults,setTotalResults]=useState(0);
 
-const fetchnews = useCallback(async () => {
-  setLoading(true);
-  const url = `https://newsapi.org/v2/top-headlines?apiKey=${process.env.REACT_APP_API_KEY}&category=${props.category}&page=1&pageSize=${props.pageSize}`;
-  try {
-    let data = await fetch(url);
-    let parsed = await data.json();
-    console.log(parsed);
-    setArticles(parsed.articles || []);
-    setTotalResults(parsed.totalResults || 0);
-    setLoading(false);
-  } catch (error) {
+  const fetchnews = useCallback(async () => {
+    setLoading(true);
+    const url = `https://newsapi.org/v2/top-headlines?apiKey=${process.env.REACT_APP_API_KEY}&category=${props.category}&page=1&pageSize=${props.pageSize}`;
+    try {
+      let data = await fetch(url);
+      let parsed = await data.json();
+      console.log(parsed);
+      setArticles(parsed.articles || []);
+      setTotalResults(parsed.totalResults || 0);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching news:", error);
+      setLoading(false);
+    }
+  }, [props.category, props.pageSize]);
+    useEffect(()=>{
+      fetchnews();
+    },[fetchnews])
+
+    const fetchmoredata=async()=>{
+      const nextpage=page+1;
+      setPage(nextpage);
+      let url=`https://newsapi.org/v2/top-headlines?apiKey=${process.env.REACT_APP_API_KEY}&category=${props.category}&page=${nextpage}&pageSize=${props.pageSize}`;
+  try{
+    let data=await fetch(url);
+    let parsed=await data.json();
+    setArticles(articles.concat(parsed.articles || []));
+  }
+  catch(error)
+  {
     console.error("Error fetching news:", error);
-    setLoading(false);
   }
-}, [props.category, props.pageSize]);
-  useEffect(()=>{
-    fetchnews();
-  },[fetchnews])
-  const fetchmoredata=async()=>{
-    const nextpage=page+1;
-    setPage(nextpage);
-    let url=`https://newsapi.org/v2/top-headlines?apiKey=${process.env.REACT_APP_API_KEY}&category=${props.category}&page=${nextpage}&pageSize=${props.pageSize}`;
-try{
-  let data=await fetch(url);
-  let parsed=await data.json();
-  setArticles(articles.concat(parsed.articles || []));
-}
-catch(error)
-{
-  console.error("Error fetching news:", error);
-}
-  }
+    }
+  
+  
   return (
     <div>
       <>
